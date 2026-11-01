@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,8 +32,6 @@ fun OpticalApp(
     transmitterViewModel: TransmitterViewModel,
     receiverViewModel: ReceiverViewModel
 ) {
-    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
-
     Scaffold(containerColor = Ink) { padding ->
         Column(
             modifier = Modifier
@@ -49,7 +46,7 @@ fun OpticalApp(
             ) {
                 Column {
                     Text(
-                        text = "OPTICAL VLC",
+                        text = "BEAMTALK",
                         style = MaterialTheme.typography.displaySmall,
                         color = TextPrimary
                     )
@@ -64,37 +61,39 @@ fun OpticalApp(
                 StatusPill(text = "İNTERNET YOK", color = NeonCyan)
             }
 
-            TabRow(
-                selectedTabIndex = selectedTab,
-                containerColor = InkRaised,
-                contentColor = NeonCyan
-            ) {
-                Tab(
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 },
-                    text = {
-                        Text(
-                            text = "VERİCİ · TX",
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                    }
-                )
-                Tab(
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 },
-                    text = {
-                        Text(
-                            text = "ALICI · RX",
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                    }
-                )
-            }
+            Spacer(Modifier.height(16.dp))
 
-            when (selectedTab) {
-                0 -> TransmitterTab(transmitterViewModel)
-                else -> ReceiverTab(receiverViewModel)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "VERİCİ · TX",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = NeonCyan
+                )
+                Spacer(Modifier.weight(1f))
+                StatusPill(text = "İNTERNET YOK", color = NeonCyan)
             }
+            Spacer(Modifier.height(8.dp))
+            TransmitterTab(transmitterViewModel)
+
+            Spacer(Modifier.height(32.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "ALICI · RX",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = NeonCyan
+                )
+                Spacer(Modifier.weight(1f))
+                StatusPill(text = "İNTERNET YOK", color = NeonCyan)
+            }
+            Spacer(Modifier.height(8.dp))
+            ReceiverTab(receiverViewModel)
         }
     }
 }

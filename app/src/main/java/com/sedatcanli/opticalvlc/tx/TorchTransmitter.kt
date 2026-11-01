@@ -188,7 +188,7 @@ class TorchTransmitter(private val torch: TorchController) {
 
     companion object {
         const val MIN_BIT_RATE_HZ = 2
-        const val MAX_BIT_RATE_HZ = 10
+        const val MAX_BIT_RATE_HZ = 30
         const val MAX_REPEATS = 5
 
         private const val LEAD_IN_NS = 500_000_000.0

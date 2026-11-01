@@ -21,7 +21,7 @@ import com.sedatcanli.opticalvlc.core.FrameCodec
  */
 class BurstDecoder(
     private val minBitRateHz: Double = 2.0,
-    private val maxBitRateHz: Double = 10.0,
+    private val maxBitRateHz: Double = 30.0,
     private val minContrast: Double = 10.0
 ) {
 

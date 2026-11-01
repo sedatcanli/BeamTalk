@@ -252,7 +252,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     onValueChange = vm::onBitRateChange,
                     valueRange = TorchTransmitter.MIN_BIT_RATE_HZ.toFloat()..
                         TorchTransmitter.MAX_BIT_RATE_HZ.toFloat(),
-                    steps = 7
+                    steps = 15
                 )
                 Text(
                     text = "Manchester sembol hÄ±zÄ±: ${(vm.bitRateHz * 2).toInt()} chip/sn  Â·  " +
@@ -260,10 +260,10 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
                 )
-                if (vm.bitRateHz > 5f) {
+                if (vm.bitRateHz > 10f) {
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "Kamera 30 FPS: 6â€“10 Hz'de hata oranÄ± artar. Menzil iÃ§in 2â€“5 Hz Ã¶nerilir.",
+                        text = "Kamera 30 FPS: 11–30 Hz'de hata oranı artar. Menzil için 2–10 Hz önerilir.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = SignalAmber
                     )
