@@ -74,9 +74,10 @@ fun TransmitterTab(vm: TransmitterViewModel) {
     ) { granted ->
         cameraPermission.value = granted
         if (granted) {
+            vm.refreshTorchAvailability()
             vm.startTransmission()
         } else {
-            vm.showMessage("FlaÅŸ denetimi iÃ§in kamera izni gerekli")
+            vm.showMessage("Flaş denetimi için kamera izni gerekli")
         }
     }
 

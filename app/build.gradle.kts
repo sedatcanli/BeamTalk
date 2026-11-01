@@ -33,7 +33,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += "-Xencoding=UTF-8"
     }
 
     buildFeatures {

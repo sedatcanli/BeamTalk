@@ -24,7 +24,13 @@ class TransmitterViewModel(application: Application) : AndroidViewModel(applicat
     val txState: StateFlow<TorchTransmitter.State> = transmitter.state
     val sttState: StateFlow<VoskSttEngine.State> = stt.state
 
-    val torchAvailable: Boolean = torch.isAvailable
+    var torchAvailable by mutableStateOf(torch.isAvailable)
+        private set
+
+    fun refreshTorchAvailability() {
+        torch.refreshTorchCameraId()
+        torchAvailable = torch.isAvailable
+    }
 
     var text by mutableStateOf("")
         private set

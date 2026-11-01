@@ -17,11 +17,27 @@ class TorchController(context: Context) {
     private val cameraManager =
         context.applicationContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
-    val torchCameraId: String? by lazy { findTorchCameraId() }
+    val torchCameraId: String?
+        get() {
+            if (!_torchInitialized) {
+                _torchCameraId = findTorchCameraId()
+                _torchInitialized = true
+            }
+            return _torchCameraId
+        }
+
+    fun refreshTorchCameraId() {
+        _torchInitialized = false
+        _torchCameraId = null
+        _torchCameraId = findTorchCameraId()
+        _torchInitialized = true
+    }
 
     val isAvailable: Boolean get() = torchCameraId != null
 
     private var lastState = false
+    private var _torchCameraId: String? = null
+    private var _torchInitialized = false
 
     @Synchronized
     fun setTorch(on: Boolean) {
