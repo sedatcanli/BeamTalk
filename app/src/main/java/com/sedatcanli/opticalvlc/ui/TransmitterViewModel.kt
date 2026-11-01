@@ -27,9 +27,13 @@ class TransmitterViewModel(application: Application) : AndroidViewModel(applicat
     var torchAvailable by mutableStateOf(torch.isAvailable)
         private set
 
+    var torchError by mutableStateOf<String?>(null)
+        private set
+
     fun refreshTorchAvailability() {
         torch.refreshTorchCameraId()
         torchAvailable = torch.isAvailable
+        torchError = torch.lastError
     }
 
     var text by mutableStateOf("")
@@ -113,18 +117,19 @@ class TransmitterViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun startTransmission(): Boolean {
+        refreshTorchAvailability()
+        if (!torchAvailable) {
+            uiMessage = torchError ?: "Bu cihazda kullanılamabilir flaş bulunamadı"
+            return false
+        }
         val payload = text.trim()
         if (payload.isEmpty()) {
-            uiMessage = "Ã–nce bir mesaj yazÄ±n veya konuÅŸun"
+            uiMessage = "Önce bir mesaj yazın veya konuşun"
             return false
         }
         val bytes = payload.toByteArray(StandardCharsets.UTF_8)
         if (bytes.size > FrameCodec.MAX_PAYLOAD_BYTES) {
             uiMessage = "Mesaj ${bytes.size} bayt; en fazla ${FrameCodec.MAX_PAYLOAD_BYTES} bayt olabilir"
-            return false
-        }
-        if (!torch.isAvailable) {
-            uiMessage = "Bu cihazda kullanÄ±labilir flaÅŸ bulunamadÄ±"
             return false
         }
         if (sttState.value.status == VoskSttEngine.Status.LISTENING) {
@@ -138,7 +143,7 @@ class TransmitterViewModel(application: Application) : AndroidViewModel(applicat
             repeats = repeats
         )
         if (!started) {
-            uiMessage = transmitter.state.value.error ?: "Ä°letim baÅŸlatÄ±lamadÄ±"
+            uiMessage = transmitter.state.value.error ?: "İletim başlatılamadı"
         }
         return started
     }

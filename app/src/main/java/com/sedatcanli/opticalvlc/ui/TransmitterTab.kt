@@ -27,6 +27,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,6 +84,19 @@ fun TransmitterTab(vm: TransmitterViewModel) {
 
     val listening = stt.status == VoskSttEngine.Status.LISTENING ||
         stt.status == VoskSttEngine.Status.LOADING
+
+    LaunchedEffect(Unit) {
+        vm.refreshTorchAvailability()
+    }
+
+    vm.torchError?.let { error ->
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = error,
+            style = MaterialTheme.typography.bodyMedium,
+            color = SignalRed
+        )
+    }
 
     LazyColumn(
         modifier = Modifier

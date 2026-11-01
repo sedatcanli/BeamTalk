@@ -39,23 +39,34 @@ class TorchController(context: Context) {
     private var _torchCameraId: String? = null
     private var _torchInitialized = false
 
+    /** Son flaş hatası (ui'da göstermek için). */
+    var lastError: String? = null
+        private set
+
     @Synchronized
-    fun setTorch(on: Boolean) {
-        val id = torchCameraId ?: return
-        if (lastState == on && on) {
-            // Still re-issue ON occasionally? Not needed; avoid flicker.
-        }
+    fun setTorch(on: Boolean): Boolean {
+        lastError = null
+        val id = torchCameraId ?: return false
         try {
             cameraManager.setTorchMode(id, on)
             lastState = on
+            return true
         } catch (e: CameraAccessException) {
-            Log.w(TAG, "setTorchMode failed", e)
+            lastError = "Flaş erişim hatası: ${e.message}"
+            Log.w(TAG, lastError, e)
+            return false
         } catch (e: IllegalArgumentException) {
-            Log.w(TAG, "Torch not available", e)
+            lastError = "Flaş desteklenmiyor: ${e.message}"
+            Log.w(TAG, lastError, e)
+            return false
         } catch (e: SecurityException) {
-            Log.w(TAG, "Camera permission missing for torch", e)
+            lastError = "Kamera izni eksik: ${e.message}"
+            Log.w(TAG, lastError, e)
+            return false
         } catch (e: RuntimeException) {
-            Log.w(TAG, "Torch runtime failure", e)
+            lastError = "Flaş çalışma hatası: ${e.message}"
+            Log.w(TAG, lastError, e)
+            return false
         }
     }
 

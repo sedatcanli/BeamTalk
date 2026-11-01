@@ -103,7 +103,13 @@ class TorchTransmitter(private val torch: TorchController) {
         var completed = false
 
         try {
-            torch.setTorch(false)
+            if (!torch.setTorch(false)) {
+                _state.value = _state.value.copy(
+                    transmitting = false,
+                    error = torch.lastError ?: "Flaş açılamadı"
+                )
+                return
+            }
             if (!parkUntil((startNs + LEAD_IN_NS).toLong())) return
 
             outer@ for (repeat in 0 until repeats) {
@@ -111,7 +117,13 @@ class TorchTransmitter(private val torch: TorchController) {
                 for (index in chips.indices) {
                     val deadline = repetitionStart + index * chipPeriodNs
                     if (!parkUntil(deadline.toLong())) break@outer
-                    torch.setTorch(chips[index] == 1)
+                    if (!torch.setTorch(chips[index] == 1)) {
+                        _state.value = _state.value.copy(
+                            transmitting = false,
+                            error = torch.lastError ?: "Flaş hatası"
+                        )
+                        return
+                    }
 
                     val now = System.nanoTime()
                     if (now - lastUpdateNs >= PROGRESS_INTERVAL_NS) {
@@ -129,7 +141,13 @@ class TorchTransmitter(private val torch: TorchController) {
                 if (!parkUntil((repetitionStart + chips.size * chipPeriodNs).toLong())) {
                     break
                 }
-                torch.setTorch(false)
+                if (!torch.setTorch(false)) {
+                    _state.value = _state.value.copy(
+                        transmitting = false,
+                        error = torch.lastError ?: "Flaş hatası"
+                    )
+                    return
+                }
                 if (!parkUntil((repetitionStart + repLengthNs).toLong())) {
                     break
                 }
