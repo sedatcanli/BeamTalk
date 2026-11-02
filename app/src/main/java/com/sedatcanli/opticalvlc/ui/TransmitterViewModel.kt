@@ -119,7 +119,7 @@ class TransmitterViewModel(application: Application) : AndroidViewModel(applicat
     fun startTransmission(): Boolean {
         refreshTorchAvailability()
         if (!torchAvailable) {
-            uiMessage = torchError ?: "Bu cihazda kullanılamabilir flaş bulunamadı"
+            uiMessage = torchError ?: "Bu cihazda kullanılabilir flaş bulunamadı"
             return false
         }
         val payload = text.trim()

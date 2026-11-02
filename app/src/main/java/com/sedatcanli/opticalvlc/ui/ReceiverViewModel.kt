@@ -1,4 +1,4 @@
-﻿package com.sedatcanli.opticalvlc.ui
+package com.sedatcanli.opticalvlc.ui
 
 import android.app.Application
 import androidx.compose.runtime.getValue
@@ -127,7 +127,7 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
             receivedAtMs = System.currentTimeMillis()
         )
         _messages.update { current -> (listOf(message) + current).take(MAX_MESSAGES) }
-        _statusMessage.value = "Paket alÄ±ndÄ± (${message.text.length} karakter)"
+        _statusMessage.value = "Paket alındı (${message.text.length} karakter)"
 
         if (autoSpeak) {
             val speakLanguage = if (useFrameLanguage) {

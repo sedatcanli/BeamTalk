@@ -4,6 +4,7 @@ import android.hardware.camera2.CaptureRequest
 import android.util.Size
 import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.camera2.interop.Camera2Interop
+import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraFilter
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -30,6 +31,7 @@ import com.sedatcanli.opticalvlc.rx.CameraSupport
 import com.sedatcanli.opticalvlc.rx.LumaAnalyzer
 import com.sedatcanli.opticalvlc.rx.LumaFrame
 import com.sedatcanli.opticalvlc.rx.OpticalDemodulator
+import com.sedatcanli.opticalvlc.tx.TorchBridge
 import com.sedatcanli.opticalvlc.ui.OverlayInfo
 import com.sedatcanli.opticalvlc.ui.theme.Ink
 import com.sedatcanli.opticalvlc.ui.theme.NeonCyan
@@ -82,6 +84,7 @@ fun ReceiverCameraBox(
         }
         var provider: ProcessCameraProvider? = null
         var analysis: ImageAnalysis? = null
+        var boundControl: CameraControl? = null
         var disposed = false
 
         val providerFuture = ProcessCameraProvider.getInstance(context)
@@ -130,7 +133,7 @@ fun ReceiverCameraBox(
 
                 cameraProvider.unbindAll()
                 val selector = buildSelector(context, telephoto)
-                try {
+                val camera = try {
                     cameraProvider.bindToLifecycle(
                         lifecycleOwner,
                         selector,
@@ -149,6 +152,8 @@ fun ReceiverCameraBox(
                         throw first
                     }
                 }
+                boundControl = camera.cameraControl
+                TorchBridge.attach(camera.cameraControl)
                 analysis = newAnalysis
             } catch (e: Exception) {
                 onError(e.message ?: "Kamera başlatılamadı")
@@ -159,6 +164,7 @@ fun ReceiverCameraBox(
 
         onDispose {
             disposed = true
+            TorchBridge.detach(boundControl)
             try {
                 analysis?.clearAnalyzer()
             } catch (_: Throwable) {

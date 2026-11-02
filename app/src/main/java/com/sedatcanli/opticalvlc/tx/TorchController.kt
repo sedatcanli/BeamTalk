@@ -46,28 +46,43 @@ class TorchController(context: Context) {
     @Synchronized
     fun setTorch(on: Boolean): Boolean {
         lastError = null
+        if (TorchBridge.isReady() && TorchBridge.setTorch(on)) {
+            lastState = on
+            return true
+        }
         val id = torchCameraId ?: return false
         try {
             cameraManager.setTorchMode(id, on)
             lastState = on
             return true
         } catch (e: CameraAccessException) {
+            if (bridgeFallback(on)) return true
             lastError = "Flaş erişim hatası: ${e.message}"
             Log.w(TAG, lastError, e)
             return false
         } catch (e: IllegalArgumentException) {
+            if (bridgeFallback(on)) return true
             lastError = "Flaş desteklenmiyor: ${e.message}"
             Log.w(TAG, lastError, e)
             return false
         } catch (e: SecurityException) {
+            if (bridgeFallback(on)) return true
             lastError = "Kamera izni eksik: ${e.message}"
             Log.w(TAG, lastError, e)
             return false
         } catch (e: RuntimeException) {
+            if (bridgeFallback(on)) return true
             lastError = "Flaş çalışma hatası: ${e.message}"
             Log.w(TAG, lastError, e)
             return false
         }
+    }
+
+    private fun bridgeFallback(on: Boolean): Boolean {
+        if (!TorchBridge.setTorch(on)) return false
+        lastState = on
+        lastError = null
+        return true
     }
 
     @Synchronized

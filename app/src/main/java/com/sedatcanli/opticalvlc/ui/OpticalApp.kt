@@ -7,23 +7,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sedatcanli.opticalvlc.ui.components.StatusPill
 import com.sedatcanli.opticalvlc.ui.theme.Ink
-import com.sedatcanli.opticalvlc.ui.theme.InkRaised
 import com.sedatcanli.opticalvlc.ui.theme.NeonCyan
+import com.sedatcanli.opticalvlc.ui.theme.OutlineDim
 import com.sedatcanli.opticalvlc.ui.theme.TextMuted
 import com.sedatcanli.opticalvlc.ui.theme.TextPrimary
 
@@ -41,7 +37,7 @@ fun OpticalApp(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
@@ -61,39 +57,45 @@ fun OpticalApp(
                 StatusPill(text = "İNTERNET YOK", color = NeonCyan)
             }
 
-            Spacer(Modifier.height(16.dp))
+            HorizontalDivider(color = OutlineDim)
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "VERİCİ · TX",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = NeonCyan
-                )
-                Spacer(Modifier.weight(1f))
-                StatusPill(text = "İNTERNET YOK", color = NeonCyan)
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "VERİCİ · TX",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = NeonCyan
+                    )
+                    Spacer(Modifier.weight(1f))
+                    StatusPill(text = "ÖN PLAN", color = TextMuted)
+                }
+                TransmitterTab(transmitterViewModel)
             }
-            Spacer(Modifier.height(8.dp))
-            TransmitterTab(transmitterViewModel)
 
-            Spacer(Modifier.height(32.dp))
+            HorizontalDivider(color = OutlineDim)
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "ALICI · RX",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = NeonCyan
-                )
-                Spacer(Modifier.weight(1f))
-                StatusPill(text = "İNTERNET YOK", color = NeonCyan)
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "ALICI · RX",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = NeonCyan
+                    )
+                    Spacer(Modifier.weight(1f))
+                    StatusPill(text = "ÖN PLAN", color = TextMuted)
+                }
+                ReceiverTab(receiverViewModel)
             }
-            Spacer(Modifier.height(8.dp))
-            ReceiverTab(receiverViewModel)
         }
     }
 }

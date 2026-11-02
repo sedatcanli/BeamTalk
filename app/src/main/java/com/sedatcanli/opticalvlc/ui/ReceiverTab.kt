@@ -1,4 +1,4 @@
-﻿package com.sedatcanli.opticalvlc.ui
+package com.sedatcanli.opticalvlc.ui
 
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -101,8 +101,8 @@ fun ReceiverTab(vm: ReceiverViewModel) {
             if (!cameraPermission.value) {
                 SectionCard(title = "Kamera") {
                     Text(
-                        text = "AlÄ±cÄ± modu, gÃ¶ndericinin flaÅŸÄ±nÄ± yakalamak iÃ§in arka kamerayÄ± " +
-                            "640Ã—480 YUV akÄ±ÅŸÄ±nda kullanÄ±r. Ä°nternet izni gerekmez.",
+                        text = "Alıcı modu, göndericinin flaşını yakalamak için arka kamerayı " +
+                            "640×480 YUV akışında kullanır. İnternet izni gerekmez.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextMuted
                     )
@@ -151,10 +151,10 @@ fun ReceiverTab(vm: ReceiverViewModel) {
         }
 
         item {
-            SectionCard(title = "CanlÄ± Sinyal (ROI Luma)") {
+            SectionCard(title = "Canlı Sinyal (ROI Luma)") {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Metric("LUMA", "${rx.luma.toInt()}", NeonCyan)
-                    Metric("EÅžÄ°K", "${rx.threshold.toInt()}", SignalAmber)
+                    Metric("EŞİK", "${rx.threshold.toInt()}", SignalAmber)
                     Metric("KONTRAST", "${rx.contrast.toInt()}", SignalGreen)
                 }
                 Spacer(Modifier.height(10.dp))
@@ -164,8 +164,8 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = "Turuncu kesikli Ã§izgi uyarlanabilir eÅŸik; parlak nokta ROI " +
-                        "ortalamasÄ± 30 FPS Ã¶rneklenir.",
+                    text = "Turuncu kesikli çizgi uyarlanabilir eşik; parlak nokta ROI " +
+                        "ortalaması 30 FPS örneklenir.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
                 )
@@ -177,7 +177,7 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                 title = "Seslendirme (TTS)",
                 trailing = {
                     StatusPill(
-                        text = if (tts.speaking) "KONUÅžUYOR" else "HAZIR",
+                        text = if (tts.speaking) "KONUŞUYOR" else "HAZIR",
                         color = if (tts.speaking) SignalAmber else NeonCyan
                     )
                 }
@@ -191,13 +191,13 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                 Spacer(Modifier.height(10.dp))
                 SwitchRow(
                     label = "Otomatik seslendir",
-                    description = "AlÄ±nan her paket hoparlÃ¶rden okunur",
+                    description = "Alınan her paket hoparlörden okunur",
                     checked = vm.autoSpeak,
                     onCheckedChange = vm::onAutoSpeakChange
                 )
                 SwitchRow(
                     label = "LANG_ID dilini kullan",
-                    description = "GÃ¶ndericinin seÃ§tiÄŸi dil, hedef dil yerine kullanÄ±lÄ±r",
+                    description = "Göndericinin seçtiği dil, hedef dil yerine kullanılır",
                     checked = vm.useFrameLanguage,
                     onCheckedChange = vm::onUseFrameLanguageChange
                 )
@@ -216,23 +216,23 @@ fun ReceiverTab(vm: ReceiverViewModel) {
         }
 
         item {
-            SectionCard(title = "Kamera AyarlarÄ±") {
+            SectionCard(title = "Kamera Ayarları") {
                 SwitchRow(
                     label = "Minimum pozlama (uzun menzil)",
-                    description = "AE telafisi en dÃ¼ÅŸÃ¼k deÄŸere, odak sonsuza kilitlenir",
+                    description = "AE telafisi en düşük değere, odak sonsuza kilitlenir",
                     checked = minExposure,
                     onCheckedChange = { minExposure = it }
                 )
                 SwitchRow(
                     label = "AE kilidi",
-                    description = "PozlamayÄ± sabitler; flaÅŸ arka plandan ayrÄ±ÅŸÄ±r",
+                    description = "Pozlamayı sabitler; flaş arka plandan ayrışır",
                     checked = aeLock,
                     onCheckedChange = { aeLock = it }
                 )
                 SwitchRow(
                     label = "Telefoto kamera",
                     description = if (capabilities?.hasTelephoto == true) {
-                        "Daha uzun odak uzaklÄ±ÄŸÄ± ile menzili artÄ±rÄ±r"
+                        "Daha uzun odak uzaklığı ile menzili artırır"
                     } else {
                         "Bu cihazda telefoto kamera tespit edilmedi"
                     },
@@ -247,7 +247,7 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                     ) {
                         "Pozlama telafisi desteklenmiyor"
                     } else {
-                        "Pozlama telafisi aralÄ±ÄŸÄ±: ${info.minExposureCompensation} â€¦ " +
+                        "Pozlama telafisi aralığı: ${info.minExposureCompensation} … " +
                             "${info.maxExposureCompensation}"
                     }
                     Text(
@@ -277,7 +277,7 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                                 cameraRestartKey++
                             }
                         ) {
-                            Text("KamerayÄ± yeniden dene")
+                            Text("Kamerayı yeniden dene")
                         }
                     }
                 }
@@ -321,8 +321,8 @@ fun ReceiverTab(vm: ReceiverViewModel) {
                     colors = CardDefaults.cardColors(containerColor = InkRaised)
                 ) {
                     Text(
-                        text = "HenÃ¼z paket yok. Verici telefonun flaÅŸÄ±nÄ± bu kameraya doÄŸrultun; " +
-                            "alÄ±cÄ±da minimum pozlama aÃ§Ä±k olsun. KaranlÄ±k ortam menzili artÄ±rÄ±r.",
+                        text = "Henüz paket yok. Verici telefonun flaşını bu kameraya doğrultun; " +
+                            "alıcıda minimum pozlama açık olsun. Karanlık ortam menzili artırır.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextMuted,
                         modifier = Modifier.padding(16.dp)
@@ -420,7 +420,7 @@ private fun MessageCard(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = "CRC âœ“",
+                    text = "CRC ✓",
                     style = MaterialTheme.typography.labelSmall,
                     color = SignalGreen
                 )
@@ -436,7 +436,7 @@ private fun MessageCard(
                 Text(
                     text = String.format(
                         Locale.US,
-                        "%.1f Hz Â· kontrast %.0f Â· %s",
+                        "%.1f Hz · kontrast %.0f · %s",
                         message.bitRateHz,
                         message.contrast,
                         formatDuration(message.durationMs)
@@ -454,11 +454,11 @@ private fun MessageCard(
 }
 
 private fun ttsStatusText(state: OfflineTtsEngine.State): String = when {
-    !state.initialized -> "TTS motoru baÅŸlatÄ±lÄ±yorâ€¦"
+    !state.initialized -> "TTS motoru başlatılıyor…"
     !state.languageAvailable ->
-        "${state.language?.displayName ?: "Hedef dil"} iÃ§in ses paketi yok"
-    state.embeddedVoiceAvailable -> "GÃ¶mÃ¼lÃ¼ (Ã§evrimdÄ±ÅŸÄ±) ses paketi hazÄ±r"
-    else -> "TTS hazÄ±r (gÃ¶mÃ¼lÃ¼ ses paketi bildirilmiyor)"
+        "${state.language?.displayName ?: "Hedef dil"} için ses paketi yok"
+    state.embeddedVoiceAvailable -> "Gömülü (çevrimdışı) ses paketi hazır"
+    else -> "TTS hazır (gömülü ses paketi bildirilmiyor)"
 }
 
 private fun ttsStatusColor(state: OfflineTtsEngine.State): androidx.compose.ui.graphics.Color =
@@ -470,10 +470,10 @@ private fun ttsStatusColor(state: OfflineTtsEngine.State): androidx.compose.ui.g
     }
 
 private fun phaseLabel(phase: OpticalDemodulator.RxPhase): String = when (phase) {
-    OpticalDemodulator.RxPhase.IDLE -> "SÄ°NYAL BEKLENÄ°YOR"
+    OpticalDemodulator.RxPhase.IDLE -> "SİNYAL BEKLENİYOR"
     OpticalDemodulator.RxPhase.PREAMBLE_ACQUISITION -> "PREAMBLE ARANIYOR"
-    OpticalDemodulator.RxPhase.READ_HEADER_AND_BODY -> "VERÄ° OKUNUYOR"
-    OpticalDemodulator.RxPhase.CRC_CHECK -> "CRC DENETLENÄ°YOR"
+    OpticalDemodulator.RxPhase.READ_HEADER_AND_BODY -> "VERİ OKUNUYOR"
+    OpticalDemodulator.RxPhase.CRC_CHECK -> "CRC DENETLENİYOR"
     OpticalDemodulator.RxPhase.DECODED -> "PAKET ALINDI"
     OpticalDemodulator.RxPhase.ERROR -> "PAKET HATALI"
 }

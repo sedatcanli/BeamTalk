@@ -1,4 +1,4 @@
-﻿package com.sedatcanli.opticalvlc.ui
+package com.sedatcanli.opticalvlc.ui
 
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -66,7 +66,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
         if (granted) {
             vm.startListening()
         } else {
-            vm.showMessage("STT iÃ§in mikrofon izni gerekli")
+            vm.showMessage("STT için mikrofon izni gerekli")
         }
     }
 
@@ -111,11 +111,11 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatusPill(
-                    text = if (vm.torchAvailable) "FLAÅž HAZIR" else "FLAÅž YOK",
+                    text = if (vm.torchAvailable) "FLAŞ HAZIR" else "FLAŞ YOK",
                     color = if (vm.torchAvailable) SignalGreen else SignalRed
                 )
                 Spacer(Modifier.width(8.dp))
-                StatusPill(text = "VOSK Â· OFFLINE", color = NeonCyan)
+                StatusPill(text = "VOSK · OFFLINE", color = NeonCyan)
                 Spacer(Modifier.weight(1f))
                 StatusPill(
                     text = "${vm.bitRateHz.toInt()} Hz",
@@ -129,7 +129,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                 title = "Kaynak Dil (STT)",
                 trailing = {
                     when (stt.status) {
-                        VoskSttEngine.Status.LISTENING -> StatusPill("DÄ°NLÄ°YOR", SignalGreen)
+                        VoskSttEngine.Status.LISTENING -> StatusPill("DİNLİYOR", SignalGreen)
                         VoskSttEngine.Status.LOADING -> StatusPill("MODEL", SignalAmber)
                         VoskSttEngine.Status.ERROR -> StatusPill("HATA", SignalRed)
                         VoskSttEngine.Status.IDLE -> Unit
@@ -137,15 +137,15 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                 }
             ) {
                 LanguageSelector(
-                    label = "KonuÅŸma dili",
+                    label = "Konuşma dili",
                     selected = vm.sourceLanguage,
                     options = Language.sttLanguages,
                     onSelect = vm::onSourceLanguageSelected
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = "Ses tanÄ±ma tamamen cihaz iÃ§inde Ã§alÄ±ÅŸÄ±r; model ilk kullanÄ±mda " +
-                        "assets klasÃ¶rÃ¼nden cihaza aÃ§Ä±lÄ±r.",
+                    text = "Ses tanıma tamamen cihaz içinde çalışır; model ilk kullanımda " +
+                        "assets klasöründen cihaza açılır.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
                 )
@@ -158,7 +158,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        "Model yÃ¼kleniyorâ€¦ (ilk seferde birkaÃ§ saniye)",
+                        "Model yükleniyor… (ilk seferde birkaç saniye)",
                         style = MaterialTheme.typography.bodyMedium,
                         color = SignalAmber
                     )
@@ -184,7 +184,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     maxLines = 8,
                     shape = RoundedCornerShape(12.dp),
                     placeholder = {
-                        Text("KonuÅŸun veya mesajÄ± buraya yazÄ±nâ€¦", color = TextMuted)
+                        Text("Konuşun veya mesajı buraya yazın…", color = TextMuted)
                     },
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences
@@ -192,7 +192,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     isError = vm.payloadBytes > FrameCodec.MAX_PAYLOAD_BYTES,
                     supportingText = {
                         Text(
-                            text = "${vm.payloadBytes} / ${FrameCodec.MAX_PAYLOAD_BYTES} bayt  Â·  " +
+                            text = "${vm.payloadBytes} / ${FrameCodec.MAX_PAYLOAD_BYTES} bayt  ·  " +
                                 "${vm.text.length} karakter",
                             color = if (vm.payloadBytes > FrameCodec.MAX_PAYLOAD_BYTES) {
                                 SignalRed
@@ -206,7 +206,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                 if (stt.partialText.isNotBlank()) {
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = "â€¦ ${stt.partialText}",
+                        text = "… ${stt.partialText}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = NeonCyan
                     )
@@ -227,9 +227,9 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     ) {
                         Text(
                             text = when (stt.status) {
-                                VoskSttEngine.Status.LOADING -> "Model yÃ¼kleniyorâ€¦ (durdur)"
+                                VoskSttEngine.Status.LOADING -> "Model yükleniyor… (durdur)"
                                 VoskSttEngine.Status.LISTENING -> "Dinlemeyi durdur"
-                                else -> "KonuÅŸ / Dinle"
+                                else -> "Konuş / Dinle"
                             }
                         )
                     }
@@ -251,7 +251,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
             SectionCard(title = "Fiziksel Katman") {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "Bit hÄ±zÄ±",
+                        "Bit hızı",
                         style = MaterialTheme.typography.bodyLarge,
                         color = TextPrimary
                     )
@@ -270,7 +270,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     steps = 15
                 )
                 Text(
-                    text = "Manchester sembol hÄ±zÄ±: ${(vm.bitRateHz * 2).toInt()} chip/sn  Â·  " +
+                    text = "Manchester sembol hızı: ${(vm.bitRateHz * 2).toInt()} chip/sn  ·  " +
                         "2 chip = 1 bit",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
@@ -298,7 +298,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                         contentPadding = PaddingValues(0.dp),
                         shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("âˆ’")
+                        Text("−")
                     }
                     Text(
                         text = vm.repeats.toString(),
@@ -321,14 +321,14 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     FrameCodec.TRAILER_SIZE
                 val bitCount = frameBytes * 8
                 Text(
-                    text = "Ã‡erÃ§eve: 0xAA | dil | boy | ${vm.payloadBytes} B | CRC-8\n" +
-                        "$frameBytes bayt Â· $bitCount bit Â· ${bitCount * 2} chip / tekrar",
+                    text = "Çerçeve: 0xAA | dil | boy | ${vm.payloadBytes} B | CRC-8\n" +
+                        "$frameBytes bayt · $bitCount bit · ${bitCount * 2} chip / tekrar",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = "Tahmini sÃ¼re: ${formatDuration(vm.estimatedDurationMs)}",
+                    text = "Tahmini süre: ${formatDuration(vm.estimatedDurationMs)}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = SignalAmber
                 )
@@ -341,7 +341,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                     when {
                         tx.transmitting -> vm.cancelTransmission()
                         !vm.torchAvailable -> vm.showMessage(
-                            "Bu cihazda kullanÄ±labilir flaÅŸ bulunamadÄ±"
+                            "Bu cihazda kullanılabilir flaş bulunamadı"
                         )
                         !cameraPermission.value -> cameraLauncher.launch(Manifest.permission.CAMERA)
                         else -> vm.startTransmission()
@@ -361,9 +361,9 @@ fun TransmitterTab(vm: TransmitterViewModel) {
             ) {
                 Text(
                     text = if (tx.transmitting) {
-                        "Ä°LETÄ°MÄ° DURDUR"
+                        "İLETİMİ DURDUR"
                     } else {
-                        "OPTÄ°K Ä°LETÄ°MÄ° BAÅžLAT"
+                        "OPTİK İLETİMİ BAŞLAT"
                     },
                     style = MaterialTheme.typography.labelLarge
                 )
@@ -383,7 +383,7 @@ fun TransmitterTab(vm: TransmitterViewModel) {
                 Text(
                     text = String.format(
                         Locale.US,
-                        "GÃ¶nderiliyorâ€¦ %%%d  Â·  tekrar %d/%d",
+                        "Gönderiliyor… %%%d  ·  tekrar %d/%d",
                         (tx.progress * 100).toInt(),
                         tx.repeatIndex.coerceAtLeast(1),
                         tx.repeats
@@ -404,14 +404,14 @@ fun TransmitterTab(vm: TransmitterViewModel) {
         }
 
         item {
-            SectionCard(title = "NasÄ±l Ã‡alÄ±ÅŸÄ±r?") {
+            SectionCard(title = "Nasıl Çalışır?") {
                 Text(
-                    text = "â€¢ Verici telefonun LED flaÅŸÄ±, alÄ±cÄ± telefonun arka kamerasÄ±na " +
-                        "Manchester kodlu Ä±ÅŸÄ±k darbeleri gÃ¶nderir.\n" +
-                        "â€¢ 5â€“10 m menzil iÃ§in alÄ±cÄ±da minimum pozlama ve karanlÄ±k ortam " +
+                    text = "• Verici telefonun LED flaşı, alıcı telefonun arka kamerasına " +
+                        "Manchester kodlu ışık darbeleri gönderir.\n" +
+                        "• 5–10 m menzil için alıcıda minimum pozlama ve karanlık ortam " +
                         "gerekir.\n" +
-                        "â€¢ Paket: 0xAA preamble, dil kimliÄŸi, uzunluk, UTF-8 metin ve CRC-8.\n" +
-                        "â€¢ Uzun mesajlar dÃ¼ÅŸÃ¼k bit hÄ±zÄ±nda dakikalar sÃ¼rebilir; kÄ±sa tutun.",
+                        "• Paket: 0xAA preamble, dil kimliği, uzunluk, UTF-8 metin ve CRC-8.\n" +
+                        "• Uzun mesajlar düşük bit hızında dakikalar sürebilir; kısa tutun.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted
                 )

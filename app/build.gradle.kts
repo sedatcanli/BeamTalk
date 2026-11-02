@@ -29,10 +29,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        encoding = "UTF-8"
     }
 
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += "-Xencoding=UTF-8"
     }
 
     buildFeatures {
