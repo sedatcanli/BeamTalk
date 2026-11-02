@@ -1,5 +1,6 @@
 package com.sedatcanli.opticalvlc.rx
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -141,6 +142,8 @@ class OpticalDemodulator(
         burst.clear()
         burstActive = false
         preRoll.clear()
+
+        Log.d("BeamTalk", "finishBurst samples=${samples.size} duration=${durationMs}ms contrast=${stats.contrast}")
 
         _state.value = State(
             phase = RxPhase.CRC_CHECK,

@@ -1,5 +1,6 @@
-package com.sedatcanli.opticalvlc.rx
+﻿package com.sedatcanli.opticalvlc.rx
 
+import android.util.Log
 import com.sedatcanli.opticalvlc.core.BitUtils
 import com.sedatcanli.opticalvlc.core.FrameCodec
 
@@ -40,7 +41,7 @@ class BurstDecoder(
     private data class Transition(val timeNs: Long, val levelAfter: Int)
 
     fun decode(samples: List<LumaSample>): Outcome {
-        if (samples.size < 8) return Outcome.Failed("Yetersiz örnek")
+        if (samples.size < 8) return Outcome.Failed("Yetersiz Ã¶rnek")
 
         val sorted = samples.map { it.luma.toDouble() }.sorted()
         val low = percentile(sorted, 0.05)
@@ -89,7 +90,7 @@ class BurstDecoder(
         }
 
         if (transitions.size < 4) {
-            return Outcome.Failed("Preamble kenarı bulunamadı")
+            return Outcome.Failed("Preamble kenarÄ± bulunamadÄ±")
         }
 
         val minBitPeriod = 1_000_000_000.0 / maxBitRateHz
@@ -137,9 +138,9 @@ class BurstDecoder(
         }
 
         return if (crcFailure) {
-            Outcome.Failed("CRC hatası (bozuk paket)")
+            Outcome.Failed("CRC hatası (bozuk paket) - transitions=${transitions.size}")
         } else {
-            Outcome.Failed("Preamble bulunamadı")
+            Outcome.Failed("Preamble bulunamadı - transitions=${transitions.size}")
         }
     }
 
@@ -245,9 +246,9 @@ class BurstDecoder(
         }
 
         return if (sawCrcCandidate) {
-            Outcome.Failed("CRC hatası (bozuk paket)")
+            Outcome.Failed("CRC hatası (bozuk paket) - transitions=${transitions.size}, bits=${bits.size}")
         } else {
-            Outcome.Failed("Preamble bulunamadı")
+            Outcome.Failed("Preamble bulunamadı - transitions=${transitions.size}, bits=${bits.size}")
         }
     }
 
@@ -311,5 +312,6 @@ class BurstDecoder(
         private const val SNAP_WINDOW = 0.32
     }
 }
+
 
 
